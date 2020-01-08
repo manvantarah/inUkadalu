@@ -2,8 +2,8 @@
 https://kadalu.io
 
 # What is Kadalu?
-## Kadalu helps you configure persistent storage in 2 easy steps.
-## So you can focus on managing and scaling your applications within k8s framework.
+Kadalu helps you configure persistent storage in 2 easy steps.
+So you can focus on managing and scaling your applications within k8s framework.
 
 # Features of Kadalu
 ## Easy to Use
