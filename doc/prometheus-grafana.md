@@ -5,17 +5,17 @@ a) Update the Ubuntu os:
 
 	$ sudo apt-get update
 
-2) create the necessary directories for storing Prometheus’ files and data:
+b) create the necessary directories for storing Prometheus’ files and data:
 
 	$ sudo mkdir /etc/prometheus
 	$ sudo mkdir /var/lib/prometheus
 
-3) Download and unpack the current stable version of Prometheus into the home directory:
+c) Download and unpack the current stable version of Prometheus into the home directory:
 
 	$ cd ~
     $ curl -LO https://github.com/prometheus/prometheus/releases/download/v2.0.0/prometheus-2.0.0.linux-amd64.tar.gz
 
-4) use the sha256sum command to generate a checksum of the downloaded:
+d) use the sha256sum command to generate a checksum of the downloaded:
 
 	$ sha256sum prometheus-2.0.0.linux-amd64.tar.gz
 
@@ -24,24 +24,24 @@ a) Update the Ubuntu os:
 
 	Output:
 	e12917b25b32980daee0e9cf879d9ec197e2893924bd1574604eb0f550034d46  prometheus-2.0.0.linux-amd64.tar.gz
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-5) unpack the downloaded archive:
+e) unpack the downloaded archive:
 
 	$ tar xvf prometheus-2.0.0.linux-amd64.tar.gz
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Note: This will create a directory containing two binary files (prometheus and promtool).
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-6) Copy the two binaries to the /usr/local/bin directory:
+f) Copy the two binaries to the /usr/local/bin directory:
 
 	$ sudo cp prometheus-2.0.0.linux-amd64/prometheus /usr/local/bin/
     $ sudo cp prometheus-2.0.0.linux-amd64/promtool /usr/local/bin/
 
-7) Set the user and group ownership on the binaries to the prometheus:
+g) Set the user and group ownership on the binaries to the prometheus:
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Note: manvantara:migroup(username:groupname)  
 
 	$ sudo chown manvantara:migroup /etc/prometheus
@@ -49,23 +49,22 @@ a) Update the Ubuntu os:
     $ sudo chown -R manvantara:migroup /etc/prometheus/consoles
     $ sudo chown -R manvantara:migroup /etc/prometheus/console_libraries
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-8) Remove the leftover files from home directory as they are no longer needed:
+h) Remove the leftover files from home directory as they are no longer needed:
 
 	$ rm -rf prometheus-2.0.0.linux-amd64.tar.gz prometheus-2.0.0.linux-amd64
 
 
-														Prometheus  installed!!
+			Prometheus  installed!!
 
 
 ## Step[2]: Configuring Prometheus.
-
-1)  use any text editor to create a configuration file named prometheus.yml:
+a) Use any text editor to create a configuration file named prometheus.yml:
 
 	$ sudo subl /etc/prometheus/prometheus.yml		
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Note: Insert the the following code in config file, hit save and exit
 	
 	global:
@@ -76,16 +75,15 @@ a) Update the Ubuntu os:
     	static_configs:
       		- targets: ['localhost:9090']
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-2) set the user and group ownership on the configuration file to the prometheus.yml:
+b) set the user and group ownership on the configuration file to the prometheus.yml:
 
 	$ sudo chown manvantara:migroup /etc/prometheus/prometheus.yml
 
 
 ## Step[3]: Running Prometheus.
-
-1) Start up Prometheus as the prometheus user, providing the path to both the configuration file and the data directory:
+a) Start up Prometheus as the prometheus user, providing the path to both the configuration file and the data directory:
 
 	    $ sudo -u prometheus /usr/local/bin/prometheus \
         --config.file /etc/prometheus/prometheus.yml \
@@ -120,7 +118,7 @@ a) Update the Ubuntu os:
 												nginx installed!!
 
 
-2) open a new systemd service file:
+b) open a new systemd service file:
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### Note: Insert the code in the file, hit save and exit
@@ -142,16 +140,15 @@ a) Update the Ubuntu os:
 	WantedBy=multi-user.target
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-3) Start systemctl: 
+c) Start systemctl: 
 
 	$ sudo systemctl daemon-reload
 
-4) Start prometheus:
+d) Start prometheus:
 
 	$ sudo systemctl start prometheus
 
-5) Check the service’s status of prometheus:
+e) Check the service’s status of prometheus:
 
 	$ sudo systemctl status prometheus
 
@@ -179,22 +176,21 @@ Output:
 
 ### Note: If the o/p is not active examine the previous command and configuration files. Do not proceed further !
 
-6) enable the service to start on boot:
+f) enable the service to start on boot:
 
 	$ sudo systemctl enable prometheus
 
 
-										 Prometheus is up and running
+		Prometheus is up and running
 
 
 ## Step[4]: Downloading Node Exporter.
-
-1) Download the current stable version of Node Exporter into home directory:
+a) Download the current stable version of Node Exporter into home directory:
 
 	$ cd ~
     $ curl -LO https://github.com/prometheus/node_exporter/releases/download/v0.15.1/node_exporter-0.15.1.linux-amd64.tar.gz
 
-2) Use the sha256sum command to generate a checksum of the downloaded file:
+b) Use the sha256sum command to generate a checksum of the downloaded file:
 
 	$ sha256sum node_exporter-0.15.1.linux-amd64.tar.gz
 
@@ -204,23 +200,22 @@ Verify the below mentioned key to avoid installation of corrupted file
 	7ffb3773abb71dd2b2119c5f6a7a0dbca0cff34b24b2ced9e01d9897df61a127  node_exporter-0.15.1.linux-amd64.tar.gz
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-3) Upack the downloaded archive:
+c) Upack the downloaded archive:
 
 	$ tar xvf node_exporter-0.15.1.linux-amd64.tar.gz
 
-4) Copy the binary to the /usr/local/bin directory and set the user and group ownership to the node_exporter:
+d) Copy the binary to the /usr/local/bin directory and set the user and group ownership to the node_exporter:
 
     $ sudo cp node_exporter-0.15.1.linux-amd64/node_exporter /usr/local/bin
     $ sudo chown manvantara:migroup /usr/local/bin/node_exporter
 
-5) Remove the leftover files from your home directory as they are no longer needed:
+e) Remove the leftover files from your home directory as they are no longer needed:
 
     $ rm -rf node_exporter-0.15.1.linux-amd64.tar.gz node_exporter-0.15.1.linux-amd64
 
 
 ## Step[5]: Running Node Exporter.
-
-1) Start by creating the Systemd service file for Node Exporter:
+a) Start by creating the Systemd service file for Node Exporter:
 
 	$ sudo subl /etc/systemd/system/node_exporter.service
 
@@ -241,15 +236,15 @@ Verify the below mentioned key to avoid installation of corrupted file
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-2) Reload systemd to use the newly created service:
+b) Reload systemd to use the newly created service:
 	
 	$ sudo systemctl daemon-reload
 
-3) Run Node Exporter:
+c) Run Node Exporter:
 
 	$ sudo systemctl start node_exporter
 
-4) Verify that Node Exporter’s running correctly with the status command:
+d) Verify that Node Exporter’s running correctly with the status command:
 
 	$ sudo systemctl status node_exporter
 
@@ -277,14 +272,13 @@ Output:
 	
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-5) Enable Node Exporter to start on boot:
+e) Enable Node Exporter to start on boot:
 
 	$ sudo systemctl enable node_exporter
 
 
 ## Step[6]: Configuring Prometheus to Scrape Node Exporter.
-
-1) Open the configuration file:
+a) Open the configuration file:
 
 	$ sudo subl /etc/prometheus/prometheus.yml
 
@@ -304,11 +298,11 @@ Output:
       		- targets: ['localhost:9100']    
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-2) Restart Prometheus: 
+b) Restart Prometheus: 
 
 	$ sudo systemctl restart prometheus
 
-3) Verify that everything is running correctly with the status command:
+c) Verify that everything is running correctly with the status command:
 
 	$ sudo systemctl status prometheus
 
@@ -328,22 +322,22 @@ Output:
 
 ## Step[7]: Securing Prometheus.
 
-1) Install apache2-utils for access to the htpasswd utility for generating password files:
+a) Install apache2-utils for access to the htpasswd utility for generating password files:
 
 	$ sudo apt-get update
 	$ sudo apt install apache2-utils
 
-2) Create a password file:
+b) Create a password file:
 
 	$ sudo htpasswd -c /etc/nginx/.htpasswd manvantara
 
 ### Note: "manvantara" is a username and typee password after executing this command
 
-3) Make a Prometheus-specific copy of the default Nginx configuration:
+c) Make a Prometheus-specific copy of the default Nginx configuration:
 
 	$ sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/prometheus
 
-4) Configure the new file
+d) Configure the new file
 
 	$ sudo subl /etc/nginx/sites-available/prometheus
 
@@ -362,12 +356,12 @@ Output:
     }
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-5) Deactivate the default Nginx configuration file by removing the link:
+e) Deactivate the default Nginx configuration file by removing the link:
 
-	$ udo rm /etc/nginx/sites-enabled/default
+	$ sudo rm /etc/nginx/sites-enabled/default
 	$ sudo ln -s /etc/nginx/sites-available/prometheus /etc/nginx/sites-enabled/
 
-6) Check the configuration for errors:
+f) Check the configuration for errors:
 
 	$ sudo nginx -t
 
@@ -379,11 +373,11 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-7) Reload Nginx to incorporate all of the changes:
+g) Reload Nginx to incorporate all of the changes:
 
 	$ sudo systemctl reload nginx
 
-8) Verify that Nginx is up and running:
+h) Verify that Nginx is up and running:
 
 	$ sudo systemctl status nginx
 
@@ -403,7 +397,8 @@ Expected Output
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-									Prometheus server is fully-functional and secured
+	Prometheus server is fully-functional and secured
+
 
 ## Step[9]: Testing Prometheus
 
@@ -412,25 +407,23 @@ Expected Output
 In the HTTP authentication dialogue box, enter the username and password created in Step[7]
 
 
-									Good to execute and visualize custom queries
+						Good to execute and visualize custom queries
 
 
 
 # Grafana #
 
-Grafana is an open-source data visualization and monitoring tool that integrates with complex data from sources like Prometheus etc
-
 ## Step[1]: Installing Grafana
 
-1) Download the Grafana GPG key with wget:
+a) Download the Grafana GPG key with wget:
 
 	$ sudo wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
 
-2) Add the Grafana repository to your APT sources:
+b) Add the Grafana repository to your APT sources:
 
 	$ sudo add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
 
-3) Refresh your APT cache to update your package lists:
+c) Refresh your APT cache to update your package lists:
 	
 	$ sudo apt update
 	$ apt-cache policy grafana
@@ -446,15 +439,15 @@ Grafana is an open-source data visualization and monitoring tool that integrates
         500 https://packages.grafana.com/oss/deb stable/main amd64 Packages
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-4) Install Grafana:
+d) Install Grafana:
 
 	$ sudo apt install grafana
 
-5) Use systemctl to start the Grafana server:
+e) Use systemctl to start the Grafana server:
 
 	$ sudo systemctl start grafana-server
 
-6) Verify that Grafana is running by checking the service’s status:
+f) Verify that Grafana is running by checking the service’s status:
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Expected Output:
@@ -467,7 +460,7 @@ Expected Output:
     Tasks: 7 (limit: 1152)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-7) Enable the service to automatically start Grafana on boot:
+g) Enable the service to automatically start Grafana on boot:
 
 	$ sudo systemctl enable grafana-server
 
@@ -481,4 +474,38 @@ Output of systemctl enable grafana-server
 
 ## Step[2]: Setting Up the Reverse Proxy:
 
-	
+a) Open the Nginx configuration file created at the time of nginx configuration
+
+	$ sudo nano /etc/nginx/sites-available/prometheus
+
+### Note: Insert the code in the configuaration file, hit save and exit
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	location /grafana {
+        proxy_pass http://localhost:3000;
+    }
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+b) Test the new settings to make sure everything is configured correctly:
+
+	$ sudo nginx -t
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Expected Output:
+
+	nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+	nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## Strp[3]: Updating Credentials
+
+### Go to local client browser and in URL type localhost:3000/grafana
+
+### Type username and password as admin, admin and update the new username and password
+
+	Grafana is ready to use!
+
