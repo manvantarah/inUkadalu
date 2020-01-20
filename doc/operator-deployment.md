@@ -1,7 +1,3 @@
----
-layout: docs
----
-
 # Quick Start
 
 Deploy KaDalu Operator using,
