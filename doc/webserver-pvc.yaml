@@ -1,0 +1,13 @@
+# File: webserver-pvc.yaml
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: webapp-pv
+spec:
+  storageClassName: kadalu.replica1
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500M
