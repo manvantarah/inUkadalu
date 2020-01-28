@@ -1,0 +1,11 @@
+apiVersion: kadalu-operator.storage/v1alpha1
+kind: KadaluStorage
+metadata:
+  name: mem-cpu-quota
+  namespace: kadalu
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 8Gi
