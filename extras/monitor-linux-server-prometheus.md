@@ -1,4 +1,4 @@
-# Basic steps to congfigure Prometheus server
+# Basic steps to congfigure Prometheus server on k8 node
 
 ## Special note:
 
@@ -38,7 +38,7 @@
 	- job_name: 'node_exporter_metrics'
     scrape_interval: 5s
     static_configs:
-      - targets: ['pod-ip:9100']  # pod-ip as shown in `$ sudo kubectl get pods -o wide`
+      - targets: ['node-ip:9100']  # node-ip as shown in `$ sudo kubectl get nodes -o wide`
 
 ## Restart the prometheus service
 
