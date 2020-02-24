@@ -1,3 +1,5 @@
+# Prometheus Pod Creation
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -9,14 +11,14 @@ spec:
           image: prom/prometheus:v2.2.1
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.path=/prometheus/"
+            - "--storage.tsdb.path=/var/lib/prometheus/"
           ports:
             - containerPort: 9090
           volumeMounts:
             - name: prometheus-config-volume
               mountPath: /etc/prometheus/
             - name: prometheus-storage-volume
-              mountPath: /prometheus/
+              mountPath: /var/lib/prometheus/
       volumes:
         - name: prometheus-config-volume
           configMap:
@@ -24,7 +26,10 @@ spec:
             name: prometheus-server-conf
 
         - name: prometheus-storage-volume
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: prometheus-storage-volume
+
+# Prometheus Service Creation
 ---
 apiVersion: v1
 kind: Service
