@@ -69,7 +69,14 @@
 	0c5104f6-1253-41b6-98a8-c723eab30401	localhost	Connected 
 	5a2dd392-9e3b-4710-8803-e6055694a955	minikube	Connected 
 
-## Create Distributed GlisterFS volume
+## Create Directory for mounting
+
+	$ sudo su
+	$ mkdir /gfs/gvs
+
+### Note: Make a new directory for every new volume created
+
+## Create Distributed GlusterFS volume
 
 	$ sudo gluster volume create <volume-name> transport tcp <node-name>:/gfs/gvs force 
 
